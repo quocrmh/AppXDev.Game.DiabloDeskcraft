@@ -1,0 +1,1321 @@
+/* ==========================================================================
+   TAM QUỐC DESKRAWL: AUTHENTIC DESKRAWL / DIABLO II GOTHIC BRONZE UI
+   Matches Deskrawl: Idle ARPG Steam Reference Screenshots #1 - #8
+   ========================================================================== */
+
+:root {
+  --bg-obsidian: #0d0907;
+  --bg-lacquer: #16100c;
+  --bg-wood-card: #1f1711;
+  --bg-parchment-dark: #2a2017;
+  --border-bronze: #5c4322;
+  --border-gold: #c89d46;
+  --border-gold-bright: #f3cc68;
+  --text-ivory: #f4ead5;
+  --text-amber: #e5b95c;
+  --text-muted: #a6937c;
+  --crimson-seal: #991b1b;
+  --jade-green: #15803d;
+  --font-serif: 'Noto Serif', 'Cinzel', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0e0a07;
+  border-left: 1px solid #2c1f13;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #8a662f 0%, #523b1b 100%);
+  border: 1px solid #b88b3a;
+  border-radius: 2px;
+}
+
+html,
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: transparent !important;
+  font-family: var(--font-serif);
+  color: var(--text-ivory);
+  font-size: 12px;
+}
+
+#app-root {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.interactive-ui {
+  pointer-events: auto;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ==========================================================================
+   1. FLUSH BOTTOM-OF-SCREEN BATTLEFIELD & TOWN ROAD (215PX)
+   ========================================================================== */
+#pixel-stage-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 215px;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 10;
+  overflow: hidden;
+  border-top: 2px solid #785623;
+  box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.85);
+}
+
+#pixel-overlay-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ==========================================================================
+   2. DESKRAWL OVERLAY HUD (THREE CLUSTERS FLUSH ON THE BOTTOM ROAD)
+   ========================================================================== */
+.deskrawl-hud-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 96px;
+  z-index: 30;
+  pointer-events: none;
+}
+
+.deskrawl-hud-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 10px 6px 10px;
+  pointer-events: none;
+}
+
+.tiger-seal-toggle {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  width: 38px;
+  height: 38px;
+  background: linear-gradient(180deg, #991b1b 0%, #450a0a 100%);
+  border: 2px solid var(--border-gold-bright);
+  color: var(--border-gold-bright);
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 900;
+  cursor: pointer;
+  pointer-events: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
+}
+
+/* --- 2A. BOTTOM-LEFT CLUSTER: SPLIT HP/RAGE GLOBE + POTION + 4 SKILLS --- */
+.deskrawl-left-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  pointer-events: auto;
+}
+
+.deskrawl-left-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-left: 4px;
+}
+
+.deskrawl-mode-btn {
+  height: 22px;
+  padding: 0 8px;
+  background: linear-gradient(180deg, #2b1f14 0%, #140e09 100%);
+  border: 1px solid #a88038;
+  color: #fde047;
+  font-family: var(--font-serif);
+  font-size: 10.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+}
+.deskrawl-mode-btn:hover {
+  filter: brightness(1.18);
+  border-color: #fde047;
+}
+.deskrawl-mode-btn.in-town {
+  background: linear-gradient(180deg, #991b1b 0%, #450a0a 100%);
+  border-color: #facc15;
+  color: #fef08a;
+}
+
+.deskrawl-train-btn {
+  height: 22px;
+  padding: 0 9px;
+  background: linear-gradient(180deg, #15803d 0%, #052e16 100%);
+  border: 1px solid #4ade80;
+  color: #fef08a;
+  font-family: var(--font-serif);
+  font-size: 10.5px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+}
+.deskrawl-train-btn:hover {
+  filter: brightness(1.15);
+}
+.deskrawl-train-btn.disabled {
+  background: #1c1510;
+  border-color: #4a3720;
+  color: #8a7965;
+}
+
+.deskrawl-orb-and-skills {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+/* DIABLO / DESKRAWL SPLIT RED/BLUE GLOBE */
+.diablo-split-globe {
+  position: relative;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #1a0f0a 0%, #070504 100%);
+  border: 3px solid #967030;
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.95),
+    inset 0 0 12px rgba(0, 0, 0, 0.9);
+  overflow: visible;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.diablo-split-globe.ready {
+  border-color: #fde047;
+  box-shadow:
+    0 0 16px rgba(250, 204, 21, 0.75),
+    inset 0 0 10px rgba(250, 204, 21, 0.4);
+}
+
+.globe-hemisphere {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  width: calc(50% - 2px);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+}
+.globe-hemisphere.left-hp {
+  left: 2px;
+  border-top-left-radius: 32px;
+  border-bottom-left-radius: 32px;
+}
+.globe-hemisphere.right-rage {
+  right: 2px;
+  border-top-right-radius: 32px;
+  border-bottom-right-radius: 32px;
+}
+
+.globe-liquid {
+  width: 100%;
+  transition: height 0.15s ease-out;
+}
+.globe-liquid.hp-liquid {
+  background: linear-gradient(180deg, #ef4444 0%, #b91c1c 55%, #450a0a 100%);
+  box-shadow: inset 0 2px 6px rgba(254, 202, 202, 0.45);
+}
+.globe-liquid.rage-liquid {
+  background: linear-gradient(180deg, #38bdf8 0%, #1d4ed8 55%, #1e1b4b 100%);
+  box-shadow: inset 0 2px 6px rgba(186, 230, 253, 0.45);
+}
+.diablo-split-globe.ready .globe-liquid.rage-liquid {
+  background: linear-gradient(180deg, #fde047 0%, #d97706 55%, #78350f 100%);
+}
+
+.globe-center-divider {
+  position: absolute;
+  top: 1px;
+  bottom: 1px;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #d4a64a 0%, #5c4322 50%, #d4a64a 100%);
+  z-index: 3;
+}
+
+.globe-glass-shine {
+  position: absolute;
+  top: 5px;
+  left: 9px;
+  width: 20px;
+  height: 12px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0) 75%);
+  transform: rotate(-28deg);
+  pointer-events: none;
+  z-index: 4;
+}
+
+.globe-hover-text {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 1px 2px #000, 0 0 4px #000;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.globe-rage-tag {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8.5px;
+  font-weight: 800;
+  color: #bae6fd;
+  text-shadow: 0 1px 2px #000;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.globe-lv-plaque {
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #120c08;
+  border: 1px solid #c89d46;
+  padding: 0 6px;
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #fde047;
+  white-space: nowrap;
+  z-index: 6;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* SKILL & POTION DOCK NEXT TO GLOBE */
+.deskrawl-skill-dock {
+  display: flex;
+  flex-direction: column;
+  background: rgba(14, 10, 7, 0.94);
+  border: 1.5px solid #6e5023;
+  padding: 4px 5px 3px 5px;
+  gap: 3px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.9);
+}
+
+.deskrawl-skill-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.deskrawl-potion-slot {
+  position: relative;
+  width: 34px;
+  height: 36px;
+  background: linear-gradient(180deg, #2a1212 0%, #120808 100%);
+  border: 1px solid #991b1b;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.deskrawl-potion-slot:hover {
+  border-color: #f87171;
+  filter: brightness(1.15);
+}
+.potion-icon {
+  font-size: 15px;
+  line-height: 1;
+}
+.potion-count {
+  font-size: 8.5px;
+  font-weight: 800;
+  color: #fca5a5;
+}
+
+.deskrawl-skill-slots {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hud-skill-slot {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  background: #140e0a;
+  border: 1.5px solid #785623;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hud-skill-slot:hover {
+  border-color: #fde047;
+}
+.hud-skill-slot.locked {
+  background: #0d0907;
+  border-color: #362817;
+  opacity: 0.7;
+}
+.hud-skill-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.skill-key-badge {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  font-size: 8px;
+  font-weight: 900;
+  color: #fde047;
+  text-shadow: 0 1px 2px #000;
+  z-index: 3;
+}
+.skill-rune-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  font-size: 8px;
+  font-weight: 900;
+  padding: 0 2px;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 3;
+}
+.skill-cd-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.76);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9.5px;
+  font-weight: 900;
+  color: #fde047;
+  z-index: 4;
+}
+
+.deskrawl-exp-track {
+  width: 100%;
+  height: 4px;
+  background: #090604;
+  border: 1px solid #3d2c16;
+  overflow: hidden;
+}
+.deskrawl-exp-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #d97706 0%, #fde047 100%);
+  transition: width 0.2s ease;
+}
+
+/* --- 2B. BOTTOM-CENTER CLUSTER: DIABLO BOSS HP BAR (Screenshot #1) --- */
+.deskrawl-boss-hud {
+  position: absolute;
+  left: 50%;
+  bottom: 8px;
+  transform: translateX(-50%);
+  width: 330px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  pointer-events: none;
+  z-index: 32;
+}
+
+.boss-hud-header {
+  text-align: center;
+}
+
+.boss-hud-name {
+  font-family: var(--font-serif);
+  font-size: 11.5px;
+  font-weight: 900;
+  color: #c084fc;
+  letter-spacing: 0.4px;
+  text-shadow:
+    0 1px 3px #000,
+    0 0 8px rgba(0, 0, 0, 0.95);
+}
+.boss-hud-name.chief {
+  color: #fca5a5;
+  font-size: 12px;
+}
+
+.boss-hud-bar-frame {
+  position: relative;
+  width: 100%;
+  height: 13px;
+  background: rgba(12, 8, 6, 0.92);
+  border: 1.5px solid #8a6529;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.95);
+  overflow: hidden;
+}
+
+.boss-hud-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7e22ce 0%, #c084fc 100%);
+  transition: width 0.12s linear;
+}
+.boss-hud-bar-fill.chief {
+  background: linear-gradient(90deg, #991b1b 0%, #ef4444 100%);
+}
+
+.boss-hud-hp-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #f8fafc;
+  text-shadow: 0 1px 2px #000;
+}
+
+/* --- 2C. BOTTOM-RIGHT CLUSTER: T1-T10 SKULL BAR + ICON TRAY (Screenshot #3) --- */
+.deskrawl-right-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  pointer-events: auto;
+}
+
+.deskrawl-skull-bar-wrap {
+  display: flex;
+  flex-direction: column;
+  width: 280px;
+  gap: 2px;
+}
+
+.skull-bar-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 4px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #f4ead5;
+  text-shadow: 0 1px 3px #000, 0 0 6px #000;
+}
+.skull-stage-title {
+  color: #fde047;
+}
+.skull-timer {
+  color: #f8fafc;
+  font-variant-numeric: tabular-nums;
+}
+
+.deskrawl-skull-bar {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  background: rgba(14, 10, 8, 0.94);
+  border: 1.5px solid #785623;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+  padding: 0 4px;
+  gap: 6px;
+}
+
+.skull-tier-badge {
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 900;
+  color: #c084fc;
+  padding: 0 4px;
+  border-right: 1px solid #4a3519;
+  cursor: pointer;
+}
+
+.skull-track-outer {
+  position: relative;
+  flex: 1;
+  height: 8px;
+  background: #1f1610;
+  border: 1px solid #4a3519;
+  display: flex;
+  align-items: center;
+}
+
+.skull-track-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7e22ce 0%, #d97706 65%, #ef4444 100%);
+  transition: width 0.2s ease;
+}
+
+.skull-nodes-row {
+  position: absolute;
+  inset: -7px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+
+.skull-node-btn {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #16100b;
+  border: 1px solid #6e5023;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: transform 0.12s ease;
+}
+.skull-node-btn:hover {
+  transform: scale(1.2);
+  border-color: #fde047;
+}
+.skull-node-btn.done {
+  background: #362612;
+  border-color: #facc15;
+}
+.skull-node-btn.active {
+  background: #7f1d1d;
+  border-color: #fde047;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.85);
+}
+.skull-node-btn.crown {
+  width: 22px;
+  height: 22px;
+  font-size: 12px;
+  border-color: #f59e0b;
+}
+
+.deskrawl-bottom-right-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.deskrawl-currency-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 30px;
+  padding: 0 8px;
+  background: rgba(14, 10, 7, 0.92);
+  border: 1px solid #5c4322;
+  font-size: 10.5px;
+}
+.cur-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+.cur-pill.gold b {
+  color: #fde047;
+}
+.cur-pill.skull b {
+  color: #fca5a5;
+}
+.cur-pill.iron b {
+  color: #38bdf8;
+}
+
+.deskrawl-icon-tray {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.deskrawl-tray-icon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(180deg, #291d14 0%, #140e09 100%);
+  border: 1.5px solid #785623;
+  color: var(--text-ivory);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.85);
+}
+.deskrawl-tray-icon:hover,
+.deskrawl-tray-icon.active {
+  border-color: #fde047;
+  background: linear-gradient(180deg, #422e1b 0%, #21160d 100%);
+}
+.tray-ico {
+  font-size: 15px;
+  line-height: 1;
+}
+.tray-badge {
+  position: absolute;
+  bottom: 0;
+  right: 1px;
+  font-size: 8.5px;
+  font-weight: 900;
+  color: #fde047;
+  background: rgba(0, 0, 0, 0.85);
+  padding: 0 2px;
+}
+.deskrawl-tray-icon.sys {
+  width: 26px;
+  height: 32px;
+  font-size: 10.5px;
+  font-weight: 800;
+  color: #e5b95c;
+}
+.deskrawl-tray-icon.sys.danger:hover {
+  background: #7f1d1d;
+  border-color: #f87171;
+  color: #fff;
+}
+
+/* ==========================================================================
+   3. DESKRAWL FLOATING WINDOWS (SCREENSHOTS #4, #5, #6, #7)
+   ========================================================================== */
+#command-modal-backdrop {
+  position: absolute;
+  top: 6px;
+  left: 16px;
+  right: 16px;
+  bottom: 218px;
+  z-index: 40;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.deskrawl-window {
+  width: min(1140px, 100%);
+  height: 100%;
+  background: linear-gradient(180deg, #1b130e 0%, #110c08 100%);
+  border: 2px solid #967030;
+  box-shadow:
+    0 12px 36px rgba(0, 0, 0, 0.96),
+    inset 0 0 0 1px #3d2c17;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+}
+
+.deskrawl-window-header {
+  height: 36px;
+  background: linear-gradient(180deg, #2d1414 0%, #170b0b 100%);
+  border-bottom: 1.5px solid #8a6529;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  flex-shrink: 0;
+}
+
+.deskrawl-window-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pixel-tab-btn {
+  height: 26px;
+  padding: 0 12px;
+  background: rgba(20, 14, 10, 0.85);
+  border: 1px solid #5c4322;
+  color: var(--text-muted);
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.pixel-tab-btn:hover {
+  color: var(--text-ivory);
+  border-color: #a88038;
+}
+.pixel-tab-btn.active {
+  background: linear-gradient(180deg, #523718 0%, #291b0c 100%);
+  border-color: #f3cc68;
+  color: #fef08a;
+}
+
+.deskrawl-close-btn {
+  width: 24px;
+  height: 24px;
+  background: #5c1919;
+  border: 1px solid #dca54c;
+  color: #fde047;
+  font-weight: 900;
+  cursor: pointer;
+}
+.deskrawl-close-btn:hover {
+  background: #991b1b;
+}
+
+.deskrawl-window-body {
+  flex: 1;
+  padding: 8px 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   4. TAB 1: DESKRAWL 3-COLUMN MINIONS / GENERALS BOOK (Screenshot #4)
+   ========================================================================== */
+.deskrawl-minions-book {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 230px 280px 1fr;
+  gap: 10px;
+  min-height: 0;
+}
+
+.book-left-list-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: #140e0a;
+  border: 1px solid #523b1c;
+  padding: 6px;
+  min-height: 0;
+}
+
+.faction-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+}
+
+.filter-pill {
+  flex: 1;
+  height: 22px;
+  background: #1f1610;
+  border: 1px solid #4a3519;
+  color: var(--text-muted);
+  font-family: var(--font-serif);
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.filter-pill.active {
+  background: #473016;
+  border-color: #f3cc68;
+  color: #fef08a;
+}
+
+.book-roster-scroll {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding-right: 2px;
+}
+
+.book-roster-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  background: #1d150f;
+  border: 1px solid #3d2c17;
+  cursor: pointer;
+  color: var(--text-ivory);
+  font-size: 11px;
+  font-weight: 700;
+}
+.book-roster-row:hover {
+  border-color: #967030;
+  background: #281d14;
+}
+.book-roster-row.selected {
+  background: linear-gradient(90deg, #4f3517 0%, #26190b 100%);
+  border-color: #fde047;
+  color: #fde047;
+}
+.book-roster-row.locked {
+  opacity: 0.48;
+}
+
+/* CENTER SHOWCASE STAGE (Screenshot #4 dark portrait stage) */
+.book-center-stage {
+  background: radial-gradient(circle at 50% 55%, #2b1f15 0%, #090604 85%);
+  border: 2px solid #785623;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  position: relative;
+}
+
+.stage-lineup-strip {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.lineup-mini-slot {
+  padding: 2px 7px;
+  background: rgba(15, 10, 7, 0.9);
+  border: 1px solid #6e5023;
+  font-size: 9.5px;
+  color: #fde047;
+}
+
+.stage-hero-pedestal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.stage-hero-img {
+  width: 118px;
+  height: 118px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.95));
+}
+
+.stage-stars {
+  font-size: 14px;
+  color: #fde047;
+  letter-spacing: 2px;
+}
+
+/* RIGHT PARCHMENT SHEET (Screenshot #4 right parchment dossier) */
+.book-right-parchment {
+  background: linear-gradient(180deg, #3b2d1f 0%, #291e14 100%);
+  border: 1.5px solid #8a6529;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.parchment-title-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid #6e5023;
+  padding-bottom: 4px;
+}
+.parchment-hero-name {
+  font-size: 16px;
+  font-weight: 900;
+  color: #fef08a;
+}
+.parchment-hero-sub {
+  font-size: 11px;
+  color: #d4a64a;
+}
+
+.parchment-stat-badges {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.p-stat-box {
+  background: rgba(15, 10, 7, 0.65);
+  border: 1px solid #5c4322;
+  padding: 4px 6px;
+  text-align: center;
+}
+.p-stat-box span {
+  display: block;
+  font-size: 9.5px;
+  color: var(--text-muted);
+}
+.p-stat-box b {
+  font-size: 12px;
+  color: #fde047;
+}
+
+.parchment-skill-card {
+  background: rgba(16, 11, 8, 0.72);
+  border: 1px solid #6e5023;
+  padding: 6px 10px;
+}
+.parchment-skill-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 800;
+  color: #fde047;
+  margin-bottom: 2px;
+}
+.parchment-skill-desc {
+  font-size: 11px;
+  color: #e7dac6;
+  line-height: 1.35;
+}
+
+.parchment-actions-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/* ==========================================================================
+   5. TAB 2: DIABLO PAPERDOLL + GRID INVENTORY + COMPARISON (Screenshots #6 & #7)
+   ========================================================================== */
+.deskrawl-gear-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 10px;
+  min-height: 0;
+}
+
+.diablo-compare-and-forge {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  min-height: 0;
+}
+
+.diablo-tooltip-card {
+  background: linear-gradient(180deg, #1a130e 0%, #0e0a07 100%);
+  border: 1.5px solid #967030;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 6px;
+}
+.diablo-tooltip-card.selected-card {
+  border-color: #f3cc68;
+}
+
+.tooltip-header-tag {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: #e5b95c;
+  background: #2b1d12;
+  border: 1px solid #6e5023;
+  padding: 2px 8px;
+  align-self: center;
+}
+
+.tooltip-item-title {
+  font-size: 13.5px;
+  font-weight: 900;
+  text-align: center;
+}
+
+.tooltip-big-stat {
+  font-size: 15px;
+  font-weight: 900;
+  color: #f8fafc;
+  text-align: center;
+  padding: 4px 0;
+  border-top: 1px solid #3a2a18;
+  border-bottom: 1px solid #3a2a18;
+}
+
+.tooltip-affix-list {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-size: 11px;
+  color: #93c5fd;
+}
+
+.stat-diff-pos {
+  color: #4ade80;
+  font-weight: 800;
+}
+.stat-diff-neg {
+  color: #f87171;
+  font-weight: 800;
+}
+
+/* RIGHT SIDE: PAPERDOLL TOP + 8x4 INVENTORY GRID BOTTOM (Screenshot #6) */
+.diablo-character-bag-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+
+.diablo-paperdoll-box {
+  background: radial-gradient(circle at 50% 50%, #261b12 0%, #120c08 100%);
+  border: 1.5px solid #6e5023;
+  padding: 6px 10px;
+  display: grid;
+  grid-template-columns: 115px 1fr 115px;
+  align-items: center;
+  gap: 6px;
+}
+
+.paperdoll-slot-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.paperdoll-slot {
+  height: 32px;
+  background: #140e09;
+  border: 1px solid #5c4322;
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  font-size: 10px;
+}
+.paperdoll-slot:hover,
+.paperdoll-slot.active {
+  border-color: #fde047;
+}
+
+.paperdoll-center-figure {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.paperdoll-center-figure img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+}
+
+.diablo-bag-grid-box {
+  flex: 1;
+  background: #110c08;
+  border: 1.5px solid #6e5023;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-height: 0;
+}
+
+.diablo-square-grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-auto-rows: 38px;
+  gap: 4px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+.diablo-grid-cell {
+  position: relative;
+  background: #1a120c;
+  border: 1.5px solid #3d2c17;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 14px;
+}
+.diablo-grid-cell:hover,
+.diablo-grid-cell.selected {
+  border-color: #fde047 !important;
+  box-shadow: inset 0 0 8px rgba(250, 204, 21, 0.45);
+}
+.cell-lv-tag {
+  position: absolute;
+  bottom: 1px;
+  right: 2px;
+  font-size: 8px;
+  font-weight: 800;
+  color: #f8fafc;
+}
+.cell-upg-tag {
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  font-size: 8px;
+  font-weight: 900;
+  color: #4ade80;
+}
+
+/* ==========================================================================
+   6. TAB 3: SPELLS & COMBAT TALENTS WINDOW (Screenshot #5)
+   ========================================================================== */
+.deskrawl-talents-layout {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 10px;
+  min-height: 0;
+}
+
+.spells-parchment-panel {
+  background: linear-gradient(180deg, #3b2d1f 0%, #261c13 100%);
+  border: 1.5px solid #8a6529;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.talent-tree-slate-panel {
+  background: radial-gradient(circle at 50% 30%, #10232a 0%, #091115 100%);
+  border: 1.5px solid #8a6529;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+
+.talent-tier-row {
+  display: grid;
+  grid-template-columns: 44px repeat(5, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  background: rgba(10, 18, 22, 0.72);
+  border: 1px solid rgba(138, 101, 41, 0.45);
+}
+
+.talent-tier-badge {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fde047 0%, #b45309 100%);
+  color: #1c1008;
+  font-weight: 900;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fef08a;
+}
+
+.talent-node-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: pointer;
+  padding: 4px;
+  border: 1px solid transparent;
+}
+.talent-node-circle:hover {
+  border-color: #fde047;
+  background: rgba(250, 204, 21, 0.08);
+}
+
+.t-circle-ico {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #172a33;
+  border: 2px solid #d4a64a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  box-shadow: 0 0 10px rgba(212, 166, 74, 0.35);
+}
+.t-circle-rank {
+  font-size: 9.5px;
+  font-weight: 800;
+  color: #fde047;
+}
+.t-circle-name {
+  font-size: 9.5px;
+  color: #cbd5e1;
+  text-align: center;
+}
+
+/* ==========================================================================
+   7. SHARED BUTTONS & GRIDS FOR PROVINCES & CAMPAIGN
+   ========================================================================== */
+.action-btn {
+  height: 28px;
+  padding: 0 12px;
+  background: linear-gradient(180deg, #7f1d1d 0%, #450a0a 100%);
+  border: 1.5px solid #d4a64a;
+  color: #fef08a;
+  font-family: var(--font-serif);
+  font-size: 11px;
+  font-weight: 800;
+  cursor: pointer;
+}
+.action-btn:hover {
+  filter: brightness(1.18);
+  border-color: #fde047;
+}
+.action-btn.jade {
+  background: linear-gradient(180deg, #15803d 0%, #052e16 100%);
+  border-color: #4ade80;
+}
+.action-btn.disabled {
+  background: #1f1812;
+  border-color: #4a3720;
+  color: #786855;
+  cursor: not-allowed;
+}
+
+.compact-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.stage-card-box {
+  background: #1a120c;
+  border: 1px solid #5c4322;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 5px;
+}
+.stage-card-box.active {
+  border-color: #fde047;
+  background: linear-gradient(180deg, #332211 0%, #1a120c 100%);
+}

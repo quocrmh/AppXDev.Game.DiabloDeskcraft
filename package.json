@@ -1,0 +1,26 @@
+{
+  "name": "diablo-deskcraft-three-kingdoms",
+  "version": "1.0.0",
+  "description": "Tam Quốc Deskrawl: Vô Song Idle ARPG - Desktop Bottom-Bar Idle ARPG in the Three Kingdoms universe",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev"
+  },
+  "keywords": [
+    "three-kingdoms",
+    "deskrawl",
+    "idle-arpg",
+    "diablo",
+    "desktop-game",
+    "electron"
+  ],
+  "author": "AppXDev",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^35.0.0"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
+  }
+}

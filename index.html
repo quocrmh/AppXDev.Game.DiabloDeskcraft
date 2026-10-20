@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tam Quốc Deskrawl: Vô Song ARPG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div id="app-root">
+      <!-- ================================================================== -->
+      <!-- DESKRAWL FLOATING WINDOWS (OPENS ABOVE THE ROAD WHEN CLICKED)      -->
+      <!-- ================================================================== -->
+      <div id="command-modal-backdrop" class="hidden">
+        <div id="command-modal" class="deskrawl-window interactive-ui">
+          <div class="deskrawl-window-header">
+            <div class="deskrawl-window-tabs">
+              <button class="pixel-tab-btn active" data-tab="generals">📜 Danh Tướng & Thu Phục</button>
+              <button class="pixel-tab-btn" data-tab="gear">🪖 Trang Bị & Lò Rèn</button>
+              <button class="pixel-tab-btn" data-tab="town">📕 Võ Kỹ & Thiên Phú</button>
+              <button class="pixel-tab-btn" data-tab="provinces">🏯 Thái Thú 13 Châu</button>
+              <button class="pixel-tab-btn" data-tab="roadmap">🗺️ Chiến Dịch (T1–T10)</button>
+            </div>
+            <button id="btn-close-modal" class="deskrawl-close-btn" title="Đóng (ESC)">✕</button>
+          </div>
+          <div id="command-modal-body" class="deskrawl-window-body"></div>
+        </div>
+      </div>
+
+      <!-- ================================================================== -->
+      <!-- FLUSH BOTTOM-OF-SCREEN BATTLEFIELD & TOWN ROAD (215PX)             -->
+      <!-- ================================================================== -->
+      <div id="pixel-stage-strip" title="Click lên chiến trường để giáng Lệnh Kỳ Lôi Kích & nhặt Thần Binh!">
+        <canvas id="pixel-overlay-canvas"></canvas>
+      </div>
+
+      <!-- ================================================================== -->
+      <!-- AUTHENTIC DESKRAWL OVERLAY HUD (FLUSH ON THE BOTTOM ROAD)          -->
+      <!-- ================================================================== -->
+      <div id="arpg-bottom-bar" class="deskrawl-hud-overlay interactive-ui">
+        <button id="btn-expand-hud" class="tiger-seal-toggle hidden" title="Mở Giao Diện">
+          帥
+        </button>
+
+        <div id="hud-bar-inner" class="deskrawl-hud-inner">
+          <!-- 1. BOTTOM-LEFT CLUSTER: Split HP/Rage Globe + Potion + 4 Skills + EXP Bar -->
+          <div class="deskrawl-left-cluster">
+            <div class="deskrawl-left-top-actions">
+              <button
+                id="btn-toggle-town"
+                class="deskrawl-mode-btn"
+                title="Chuyển đổi Chiến Trường / Doanh Trại Tiền Tuyến"
+              >
+                🏕️ Doanh Trại
+              </button>
+              <button
+                id="btn-hud-train"
+                class="deskrawl-train-btn"
+                title="Huấn luyện quân đội: Tăng +14% Công & Máu toàn quân"
+              >
+                ⬆ Rèn Quân Cấp 1 (24 Vàng)
+              </button>
+            </div>
+
+            <div class="deskrawl-orb-and-skills">
+              <!-- DIABLO / DESKRAWL SPLIT RED/BLUE GLOBE -->
+              <div
+                id="btn-cast-ultimate"
+                class="diablo-split-globe"
+                title="Bấm để tung Tuyệt Kỹ Hợp Kích / Thiên Lôi khi đầy Nộ (Phím Space)"
+              >
+                <div class="globe-hemisphere left-hp">
+                  <div id="hud-hp-fill" class="globe-liquid hp-liquid" style="height: 100%"></div>
+                </div>
+                <div class="globe-hemisphere right-rage">
+                  <div id="hud-rage-fill" class="globe-liquid rage-liquid" style="height: 0%"></div>
+                </div>
+                <div class="globe-center-divider"></div>
+                <div class="globe-glass-shine"></div>
+                <span id="hud-hp-text" class="globe-hover-text">250/250</span>
+                <span id="hud-rage-text" class="globe-rage-tag">0%</span>
+                <div id="hud-commander-lv" class="globe-lv-plaque">Lv. 1</div>
+              </div>
+
+              <!-- POTION + 4 SQUARE SKILL SLOTS + BOTTOM EXP STRIP -->
+              <div class="deskrawl-skill-dock">
+                <div class="deskrawl-skill-row">
+                  <button
+                    id="btn-hud-potion"
+                    class="deskrawl-potion-slot"
+                    title="Linh Dược Hành Quân: Hồi 65% Máu & +50% Tốc Đánh (Phím Q)"
+                  >
+                    <span class="potion-icon">🧪</span>
+                    <span id="hud-potion-count" class="potion-count">3/3</span>
+                  </button>
+                  <div id="hud-skill-slots" class="deskrawl-skill-slots"></div>
+                </div>
+                <div class="deskrawl-exp-track" title="Kinh nghiệm Thống Soái">
+                  <div id="hud-exp-fill" class="deskrawl-exp-fill" style="width: 0%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. BOTTOM-CENTER CLUSTER: DIABLO / DESKRAWL BOSS HP BAR (Screenshot #1) -->
+          <div id="deskrawl-boss-hud" class="deskrawl-boss-hud">
+            <div class="boss-hud-header">
+              <span id="boss-hud-name" class="boss-hud-name">[TIÊN PHONG] TRƯƠNG GIÁC</span>
+            </div>
+            <div class="boss-hud-bar-frame">
+              <div id="boss-hud-fill" class="boss-hud-bar-fill" style="width: 100%"></div>
+              <span id="boss-hud-hp-text" class="boss-hud-hp-text">500 / 500</span>
+            </div>
+          </div>
+
+          <!-- 3. BOTTOM-RIGHT CLUSTER: T1-T10 3-SKULL + 1-CROWN BAR & ICON TRAY (Screenshot #3) -->
+          <div class="deskrawl-right-cluster">
+            <div class="deskrawl-skull-bar-wrap">
+              <div class="skull-bar-meta">
+                <span id="hud-stage-title" class="skull-stage-title">Ải 1: Khởi Nghĩa Khăn Vàng</span>
+                <span id="hud-boss-timer" class="skull-timer">00:24</span>
+              </div>
+              <div class="deskrawl-skull-bar">
+                <span id="hud-tier-badge" class="skull-tier-badge" title="Chọn Ải Chiến Dịch">T1</span>
+                <div class="skull-track-outer">
+                  <div id="hud-skull-fill" class="skull-track-fill" style="width: 25%"></div>
+                  <div class="skull-nodes-row">
+                    <button class="skull-node-btn" data-wave="1" title="Đợt 1: Tiên Phong Trấn Ải (Bấm để đánh ngay)">💀</button>
+                    <button class="skull-node-btn" data-wave="2" title="Đợt 2: Tả Quân Đô Úy (Bấm để đánh ngay)">💀</button>
+                    <button class="skull-node-btn" data-wave="3" title="Đợt 3: Hữu Quân Hộ Pháp (Bấm để đánh ngay)">💀</button>
+                    <button id="btn-boss-action" class="skull-node-btn crown" data-wave="4" title="Đợt 4: KHIÊU CHIẾN CHỦ SOÁI TRẤN ẢI NGAY!">👑</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="deskrawl-bottom-right-row">
+              <div class="deskrawl-currency-strip">
+                <span class="cur-pill gold" title="Lương Thảo (Vàng)">🪙 <b id="hud-gold-val">60</b></span>
+                <span class="cur-pill skull" title="Chiếních Đầu Lâu Boss">💀 <b id="hud-skull-val">0</b></span>
+                <span class="cur-pill iron" title="Huyền Thiết Rèn Đồ">⛏️ <b id="hud-iron-val">8</b></span>
+              </div>
+
+              <div class="deskrawl-icon-tray">
+                <button class="deskrawl-tray-icon" data-open-tab="gear" title="Trang Bị & Lò Rèn (Diablo Paperdoll & Kho Đồ)">
+                  <span class="tray-ico">🪖</span>
+                  <span id="hud-bag-count" class="tray-badge">0</span>
+                </button>
+                <button class="deskrawl-tray-icon" data-open-tab="town" title="Võ Kỹ & Cây Thiên Phú Chiến Đấu">
+                  <span class="tray-ico">📕</span>
+                </button>
+                <button class="deskrawl-tray-icon" data-open-tab="generals" title="Danh Tướng & Binh Chủng Thu Phục">
+                  <span class="tray-ico">📜</span>
+                  <span id="hud-roster-val" class="tray-badge">1</span>
+                </button>
+                <button class="deskrawl-tray-icon" data-open-tab="provinces" title="Thái Thú Trấn 13 Châu">
+                  <span class="tray-ico">🏯</span>
+                </button>
+                <button class="deskrawl-tray-icon" data-open-tab="roadmap" title="Sa Bàn Chiến Dịch (T1–T10) & Quá Ngũ Quan">
+                  <span class="tray-ico">🗺️</span>
+                </button>
+                <button id="btn-cycle-speed" class="deskrawl-tray-icon sys" title="Tốc độ trận đấu">1x</button>
+                <button id="btn-toggle-sound" class="deskrawl-tray-icon sys" title="Bật/Tắt Âm thanh">🔊</button>
+                <button id="btn-hide-hud" class="deskrawl-tray-icon sys" title="Thu nhỏ thanh giao diện">_</button>
+                <button id="btn-quit-app" class="deskrawl-tray-icon sys danger" title="Lưu & Thoát">✕</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="src/main.js"></script>
+  </body>
+</html>
